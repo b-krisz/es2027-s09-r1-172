@@ -18,10 +18,10 @@ namespace CommandLineTool
 
                 return; // exiting the program
             }
+            WriteLineColor(Console.Out, ConsoleColor.Green, $"[OK] Arguments passed successfully...");
             
             string folderPath = Path.GetFullPath(args[0]);
-            string jsonPath = args[1];
-            WriteLineColor(Console.Out, ConsoleColor.Green, $"[OK] Arguments passed successfully...");
+            string jsonUrl = args[1];
             
             
             if (!Directory.Exists(folderPath))
@@ -31,7 +31,9 @@ namespace CommandLineTool
             }
             WriteLineColor(Console.Out, ConsoleColor.Green, $"[OK] Directory exists...");
             
-            IEnumerable<string> files = Directory.EnumerateFiles(folderPath).Where(s => s.EndsWith("map.png") || s.EndsWith("map.txt"));
+            string[] files = Directory.EnumerateFiles(folderPath).Where(s => s.EndsWith("map.png") || s.EndsWith("map.txt")).OrderBy(x => x).ToArray();
+            
+            
             if (files.Count() != 2)
             {
                 WriteLineColor(Console.Error, ConsoleColor.DarkYellow, $"[X] Directory \"{folderPath}\" does not contains map.png nor map.txt!");
