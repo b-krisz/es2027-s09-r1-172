@@ -5,6 +5,7 @@ Solution by Bori Krisztián Sándor
 
 ## Prerequisites
 - Download and install [Node.js](https://nodejs.org/en/download)
+- Download and install [.NET SDK 8](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
 - Clone the repository
   ```sh
    git clone https://github.com/b-krisz/es2027-s09-r1-172.git
@@ -26,12 +27,31 @@ Solution by Bori Krisztián Sándor
 ## Usage
 
 ### JSON-SERVER
+
 1. Change the working directory to the JSON-SERVER
     ```sh
-    cd JSON-SERVER/
+    cd ./JSON-SERVER/
     ```
 2. Start the JSON-SERVER with the database
     ```sh
-    npx json-server <database>
+    npx json-server <database_file>
     ```
     Defaultly the JSON-SERVER runs on port **3000**
+
+### Command Line Tool
+
+1. Change the working directory to the Command Line Tool
+    ```sh
+    cd ./CommandLineTool/
+    ```
+    
+2. *It is possible to run the program both with the executable manually or with the dotnet command*
+    - Executable
+        ```sh
+        cd ./bin/Release/net8.0/
+        ./CommandLineTool.exe <folder_path> <json_server_url>
+        ```
+    - Dotnet
+        ```sh
+        dotnet run <folder_path> <json_server_url>
+        ```
