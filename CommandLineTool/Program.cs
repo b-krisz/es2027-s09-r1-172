@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace CommandLineTool
 {
@@ -31,23 +32,51 @@ namespace CommandLineTool
             }
             WriteLineColor(Console.Out, ConsoleColor.Green, $"[OK] Directory exists...");
             
+            // Ordering the files, for easier indices
             string[] files = Directory.EnumerateFiles(folderPath).Where(s => s.EndsWith("map.png") || s.EndsWith("map.txt")).OrderBy(x => x).ToArray();
             
             
-            if (files.Count() != 2)
+            if (files.Length != 2)
             {
                 WriteLineColor(Console.Error, ConsoleColor.DarkYellow, $"[X] Directory \"{folderPath}\" does not contains map.png nor map.txt!");
                 return;
             }
             WriteLineColor(Console.Out, ConsoleColor.Green, $"[OK] Files map.png and map.txt found in the directory...");
-            
+
+            Project project = CreateProject(folderPath, files);
         }
 
-        private static void CreateJson()
+        private static Project CreateProject(string folderPath, string[] filePaths)
         {
-            
-        }
+            string projectName = Path.GetFileName(folderPath);
+            string projectMapData = Convert.ToBase64String(File.ReadAllBytes(filePaths[0]));
+            Cell[] projectCells = new Cell[400];
 
+            using (FileStream fs = new FileStream(filePaths[1], FileMode.Open))
+            {
+                using (StreamReader sr = new StreamReader(fs))
+                {
+                    string[] lines = sr.ReadToEnd().Split('\n');
+                    for (int y = 0; y < 20; y++)
+                    {
+                        for (int x = 0; x < 20; x++)
+                        {
+                            string type = lines[y][x] switch
+                            {
+                                'O' => "Grass",
+                                'X' => "Lake",
+                                '#' => "Mountain",
+                                _ => "UNKNOWN"
+                            };
+                            projectCells[x+y] =  new Cell(x, y, type, false);
+                        }
+                    }
+                }
+            }
+
+            return new Project(projectName, projectMapData, projectCells);
+        }
+        
         private static void WriteLineColor(TextWriter tw, ConsoleColor color, string s)
         {
             Console.ForegroundColor = color;
