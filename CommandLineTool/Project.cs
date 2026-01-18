@@ -5,5 +5,12 @@ namespace CommandLineTool
         public string name;
         public string mapData;
         public Cell[] cells;
+
+        public Project(string name, string mapData, Cell[] cells)
+        {
+            this.name = name;
+            this.mapData = mapData;
+            this.cells = cells;
+        }
     }
 }
