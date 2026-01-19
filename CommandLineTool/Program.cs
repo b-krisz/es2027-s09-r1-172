@@ -24,27 +24,31 @@ namespace CommandLineTool
             
             string folderPath = Path.GetFullPath(args[0]);
             string jsonUrl = args[1];
+            
+            Project? project = null;
 
-            if (TryLoadLockFile(out string data))
+            if (TryLoadLockFile(out string data)) // If we are able to retrieve a lockfile, giving a chance to use it, it creates a project from it 
             {
-                WriteLineColor(Console.Out, ConsoleColor.DarkGreen, $"[!] Found lockfile... Do you want to open it and resume the last session? (y/n)");
+                WriteColor(Console.Out, ConsoleColor.DarkGreen, $"[!] Found lockfile... Do you want to open it and resume the last session? (y/n): ");
                 if (Console.ReadKey().Key == ConsoleKey.Y)
                 {
-                    Project project = JsonSerializer.Deserialize<Project>(data);
+                    project = JsonSerializer.Deserialize<Project>(data);
+                    TryDeleteLockFile();
+                    return;
                 }
+                Console.WriteLine();
             }
-            else
-            {
-                string[]? files = LoadFiles(folderPath);
-                if (files == null) return;
+            // If not, we continue normally
             
-                Project? project = CreateProject(folderPath, files);
-                if (project == null) return;
+            string[]? files = LoadFiles(folderPath);
+            if (files == null) return;
+        
+            project = CreateProject(folderPath, files);
+            if (project == null) return;
 
-                if (TrySaveLockFile(JsonSerializer.Serialize(project)))
-                    WriteLineColor(Console.Out, ConsoleColor.Green, "[OK] Successfully saved lockfile...");
-                else WriteLineColor(Console.Error, ConsoleColor.DarkYellow, "[x] Failed to save lockfile!");
-            }
+            if (TrySaveLockFile(JsonSerializer.Serialize(project)))
+                WriteLineColor(Console.Out, ConsoleColor.Green, "[OK] Successfully saved lockfile...");
+            else WriteLineColor(Console.Error, ConsoleColor.DarkYellow, "[x] Failed to save lockfile!");
 
         }
 
@@ -151,7 +155,19 @@ namespace CommandLineTool
 
             return true;
         }
-        
+        private static bool TryDeleteLockFile()
+        {
+            try
+            {
+                File.Delete("./output.lock");
+            }
+            catch (Exception )
+            {
+                return false;
+            }
+
+            return true;
+        }
         private static void WriteLineColor(TextWriter tw, ConsoleColor color, string s)
         {
             Console.ForegroundColor = color;
