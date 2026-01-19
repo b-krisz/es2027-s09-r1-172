@@ -19,7 +19,7 @@ namespace CommandLineTool
 
                 return; // exiting the program
             }
-            WriteLineColor(Console.Out, ConsoleColor.Green, $"[OK] Arguments passed successfully...");
+            WriteLineColor(Console.Out, ConsoleColor.Green, "[OK] Arguments passed successfully...");
             
             string folderPath = Path.GetFullPath(args[0]);
             string jsonUrl = args[1];
@@ -32,10 +32,12 @@ namespace CommandLineTool
             }
             WriteLineColor(Console.Out, ConsoleColor.Green, $"[OK] Directory exists...");
             
+            
             // Ordering the files, for easier indices
             string[] files = Directory.EnumerateFiles(folderPath).Where(s => s.EndsWith("map.png") || s.EndsWith("map.txt")).OrderBy(x => x).ToArray();
             
             
+            // After filtering out the files for map.png and map.txt, if the Length is not 2, its obvious that one of them is missing
             if (files.Length != 2)
             {
                 WriteLineColor(Console.Error, ConsoleColor.DarkYellow, $"[X] Directory \"{folderPath}\" does not contains map.png nor map.txt!");
@@ -128,6 +130,12 @@ namespace CommandLineTool
         {
             Console.ForegroundColor = color;
             tw.WriteLine(s);
+            Console.ResetColor();
+        }
+        private static void WriteColor(TextWriter tw, ConsoleColor color, string s)
+        {
+            Console.ForegroundColor = color;
+            tw.Write(s);
             Console.ResetColor();
         }
     }   
