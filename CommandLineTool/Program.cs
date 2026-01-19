@@ -6,6 +6,10 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
+// TODO: UNKNOWN ISSUE, SOMEHOW A FEW POST REQUESTS PRODUCED OBJECTS WITH EMPTY STRINGS AS NAMES
+// TODO: UNIT TESTING
+// TODO: MORE EXPLICIT ERROR HANDLING, AND ERROR MESSAGES
+
 namespace CommandLineTool
 {
     internal static class Program
@@ -74,7 +78,7 @@ namespace CommandLineTool
             else
                 WriteLineColor(Console.Error, ConsoleColor.DarkYellow, "[x] Failed to upload JSON!");
         }
-
+        
         private static string[]? LoadFiles(string folderPath)
         {
             // Checking if the directory exists
