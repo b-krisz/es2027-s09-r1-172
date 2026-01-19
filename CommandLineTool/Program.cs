@@ -1,55 +1,78 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace CommandLineTool
 {
-    internal class Program
+    internal static class Program
     {
+        private static readonly HttpClient HttpClient = new HttpClient();
         private static void Main(string[] args)
         {
             // Argument check
             if (args.Length != 2)
             {
                 WriteLineColor(Console.Error, ConsoleColor.DarkYellow,
-                    $"[X] usage: {System.AppDomain.CurrentDomain.FriendlyName}.exe <folder_path> <json_server_url>");
+                    $"[X] usage: {AppDomain.CurrentDomain.FriendlyName}.exe <folder_path> <json_server_url>");
                 
                 WriteLineColor(Console.Error, ConsoleColor.Yellow,
-                    $"[!] e.g  : {System.AppDomain.CurrentDomain.FriendlyName}.exe C:/Users/user/Desktop/Gurum http://localhost:3000");
+                    $"[!] e.g  : {AppDomain.CurrentDomain.FriendlyName}.exe C:/Users/user/Desktop/Gurum http://localhost:3000/projects");
 
                 return; // exiting the program
             }
             WriteLineColor(Console.Out, ConsoleColor.Green, "[OK] Arguments passed successfully...");
             
+            
             string folderPath = Path.GetFullPath(args[0]);
             string jsonUrl = args[1];
-            
             Project? project = null;
 
+            
             if (TryLoadLockFile(out string data)) // If we are able to retrieve a lockfile, giving a chance to use it, it creates a project from it 
             {
                 WriteColor(Console.Out, ConsoleColor.DarkGreen, $"[!] Found lockfile... Do you want to open it and resume the last session? (y/n): ");
                 if (Console.ReadKey().Key == ConsoleKey.Y)
                 {
+                    Console.WriteLine();
                     project = JsonSerializer.Deserialize<Project>(data);
-                    TryDeleteLockFile();
-                    return;
                 }
-                Console.WriteLine();
+                else
+                {
+                    Console.WriteLine();
+                    WriteLineColor(Console.Out, ConsoleColor.DarkGreen, $"[!] Skipping lockfile...");
+                }
             }
-            // If not, we continue normally
             
-            string[]? files = LoadFiles(folderPath);
-            if (files == null) return;
+            if (project == null) // If it's still null, the user skipped the lockfile
+            {
+                string[]? files = LoadFiles(folderPath);
+                if (files == null) return;
         
-            project = CreateProject(folderPath, files);
-            if (project == null) return;
+            
+                project = CreateProject(folderPath, files);
+                if (project == null) return;
 
-            if (TrySaveLockFile(JsonSerializer.Serialize(project)))
-                WriteLineColor(Console.Out, ConsoleColor.Green, "[OK] Successfully saved lockfile...");
-            else WriteLineColor(Console.Error, ConsoleColor.DarkYellow, "[x] Failed to save lockfile!");
+                // Trying to a session into a lockfile
+                if (TrySaveLockFile(JsonSerializer.Serialize(project)))
+                    WriteLineColor(Console.Out, ConsoleColor.Green, "[OK] Successfully saved lockfile...");
+                else WriteLineColor(Console.Error, ConsoleColor.DarkYellow, "[x] Failed to save lockfile!");
+            }
 
+
+            if (UploadJson(jsonUrl, JsonSerializer.Serialize(project)).Result)
+            {
+                WriteLineColor(Console.Out, ConsoleColor.Green, "[OK] Successfully uploaded JSON...");
+                if (TryDeleteLockFile())
+                    WriteLineColor(Console.Out, ConsoleColor.DarkGreen, "[!] Successfully deleted lockfile...");
+                else
+                    WriteLineColor(Console.Error, ConsoleColor.DarkYellow, "[x] Failed to delete lockfile!");
+            }
+            else
+                WriteLineColor(Console.Error, ConsoleColor.DarkYellow, "[x] Failed to upload JSON!");
         }
 
         private static string[]? LoadFiles(string folderPath)
@@ -80,7 +103,7 @@ namespace CommandLineTool
         private static Project? CreateProject(string folderPath, string[] filePaths)
         {
             string projectName = Path.GetFileName(folderPath);
-            string projectMapData = Convert.ToBase64String(File.ReadAllBytes(filePaths[0]));
+            string projectMapData = "data:image/png;base64,"+Convert.ToBase64String(File.ReadAllBytes(filePaths[0]));
             Cell[] projectCells = new Cell[400]; // 20x20 grid
             try
             {
@@ -114,6 +137,21 @@ namespace CommandLineTool
             WriteLineColor(Console.Out, ConsoleColor.Green, $"[OK] {projectName} Project created...");
             
             return new Project(projectName, projectMapData, projectCells);
+        }
+        private static async Task<bool> UploadJson(string jsonUrl, string data)
+        {
+            try
+            {
+                HttpClient.BaseAddress = new Uri(jsonUrl);
+                HttpResponseMessage response = await HttpClient.PostAsync("", new StringContent(data, Encoding.UTF8, "application/json"));
+                response.EnsureSuccessStatusCode();
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            return true;
         }
         private static bool TryLoadLockFile(out string data)
         {
