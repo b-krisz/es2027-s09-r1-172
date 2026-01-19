@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json;
 
 namespace CommandLineTool
 {
@@ -23,12 +24,37 @@ namespace CommandLineTool
             
             string folderPath = Path.GetFullPath(args[0]);
             string jsonUrl = args[1];
+
+            if (TryLoadLockFile(out string data))
+            {
+                WriteLineColor(Console.Out, ConsoleColor.DarkGreen, $"[!] Found lockfile... Do you want to open it and resume the last session? (y/n)");
+                if (Console.ReadKey().Key == ConsoleKey.Y)
+                {
+                    Project project = JsonSerializer.Deserialize<Project>(data);
+                }
+            }
+            else
+            {
+                string[]? files = LoadFiles(folderPath);
+                if (files == null) return;
             
-            
+                Project? project = CreateProject(folderPath, files);
+                if (project == null) return;
+
+                if (TrySaveLockFile(JsonSerializer.Serialize(project)))
+                    WriteLineColor(Console.Out, ConsoleColor.Green, "[OK] Successfully saved lockfile...");
+                else WriteLineColor(Console.Error, ConsoleColor.DarkYellow, "[x] Failed to save lockfile!");
+            }
+
+        }
+
+        private static string[]? LoadFiles(string folderPath)
+        {
+            // Checking if the directory exists
             if (!Directory.Exists(folderPath))
             {
                 WriteLineColor(Console.Error, ConsoleColor.DarkYellow, $"[X] Directory \"{folderPath}\" does not exist!");
-                return;
+                return null;
             }
             WriteLineColor(Console.Out, ConsoleColor.Green, $"[OK] Directory exists...");
             
@@ -41,11 +67,11 @@ namespace CommandLineTool
             if (files.Length != 2)
             {
                 WriteLineColor(Console.Error, ConsoleColor.DarkYellow, $"[X] Directory \"{folderPath}\" does not contains map.png nor map.txt!");
-                return;
+                return null;
             }
             WriteLineColor(Console.Out, ConsoleColor.Green, $"[OK] Files map.png and map.txt found in the directory...");
 
-            Project project = CreateProject(folderPath, files);
+            return files;
         }
         private static Project? CreateProject(string folderPath, string[] filePaths)
         {
