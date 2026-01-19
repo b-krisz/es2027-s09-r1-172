@@ -18,7 +18,7 @@ Solution by Bori Krisztián Sándor
 
 1. Change the working directory to the JSON-SERVER
     ```sh
-    cd JSON-SERVER/
+    cd ./JSON-SERVER/
     ```
 2. Install JSON-SERVER and its dependencies
     ```sh
