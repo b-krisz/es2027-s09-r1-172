@@ -2,10 +2,10 @@
 {
     public class Cell
     {
-        public int x;
-        public int y;
-        public string type;
-        public bool hasTurbine;
+        public int x { get; set; }
+        public int y { get; set; }
+        public string type {get; set;}
+        public bool hasTurbine {get; set;}
 
         public Cell(int x, int y, string type, bool hasTurbine)
         {

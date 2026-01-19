@@ -2,9 +2,9 @@ namespace CommandLineTool
 {
     public class Project
     {
-        public string name;
-        public string mapData;
-        public Cell[] cells;
+        public string name {get; set;}
+        public string mapData {get; set;}
+        public Cell[] cells {get; set;}
 
         public Project(string name, string mapData, Cell[] cells)
         {
