@@ -83,6 +83,46 @@ namespace CommandLineTool
             
             return new Project(projectName, projectMapData, projectCells);
         }
+        private static bool TryLoadLockFile(out string data)
+        {
+            data = "";
+            try
+            {
+                if (!File.Exists("./output.lock")) return false;
+                using (FileStream fs = new FileStream("./output.lock", FileMode.Open))
+                {
+                    using (StreamReader sr = new StreamReader(fs))
+                    {
+                        data = sr.ReadToEnd();
+                    }
+                }
+            }
+            catch (Exception )
+            {
+                return false;
+            }
+
+            return true;
+        }
+        private static bool TrySaveLockFile(string data)
+        {
+            try
+            {
+                using (FileStream fs = new FileStream("./output.lock", FileMode.Create))
+                {
+                    using (StreamWriter sw = new StreamWriter(fs))
+                    {
+                        sw.Write(data);
+                    }
+                }
+            }
+            catch (Exception )
+            {
+                return false;
+            }
+
+            return true;
+        }
         
         private static void WriteLineColor(TextWriter tw, ConsoleColor color, string s)
         {
