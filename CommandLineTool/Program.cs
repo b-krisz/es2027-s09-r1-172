@@ -45,35 +45,42 @@ namespace CommandLineTool
 
             Project project = CreateProject(folderPath, files);
         }
-
-        private static Project CreateProject(string folderPath, string[] filePaths)
+        private static Project? CreateProject(string folderPath, string[] filePaths)
         {
             string projectName = Path.GetFileName(folderPath);
             string projectMapData = Convert.ToBase64String(File.ReadAllBytes(filePaths[0]));
-            Cell[] projectCells = new Cell[400];
-
-            using (FileStream fs = new FileStream(filePaths[1], FileMode.Open))
+            Cell[] projectCells = new Cell[400]; // 20x20 grid
+            try
             {
-                using (StreamReader sr = new StreamReader(fs))
+                using (FileStream fs = new FileStream(filePaths[1], FileMode.Open))
                 {
-                    string[] lines = sr.ReadToEnd().Split('\n');
-                    for (int y = 0; y < 20; y++)
+                    using (StreamReader sr = new StreamReader(fs))
                     {
-                        for (int x = 0; x < 20; x++)
+                        string[] lines = sr.ReadToEnd().Split('\n');
+                        for (int y = 0; y < 20; y++)
                         {
-                            string type = lines[y][x] switch
+                            for (int x = 0; x < 20; x++)
                             {
-                                'O' => "Grass",
-                                'X' => "Lake",
-                                '#' => "Mountain",
-                                _ => "UNKNOWN"
-                            };
-                            projectCells[x+y] =  new Cell(x, y, type, false);
+                                string type = lines[y][x] switch
+                                {
+                                    'O' => "Grass",
+                                    'X' => "Lake",
+                                    '#' => "Mountain",
+                                    _ => "UNKNOWN"
+                                };
+                                projectCells[y * 20 + x] = new Cell(x, y, type, false);
+                            }
                         }
                     }
                 }
             }
-
+            catch (Exception)
+            {
+                WriteLineColor(Console.Error, ConsoleColor.DarkYellow, $"[X] Failed to create project!");
+                return null;
+            }
+            WriteLineColor(Console.Out, ConsoleColor.Green, $"[OK] {projectName} Project created...");
+            
             return new Project(projectName, projectMapData, projectCells);
         }
         
