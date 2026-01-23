@@ -24,6 +24,18 @@ Solution by Bori Krisztián Sándor
     ```sh
     npm install
     ```
+
+### UI
+
+1. Change the working directory to the UI
+    ```sh
+    cd ./UI/
+    ```
+2. Install UI (Angular) and its dependencies
+    ```sh
+    npm install
+    ```
+
 ## Usage
 
 ### JSON-SERVER
@@ -79,3 +91,5 @@ Solution by Bori Krisztián Sándor
         dotnet run --urls <rest_api_url>
         ```
         **e.g. ```dotnet run --urls http://localhost:3001```**
+
+### UI
