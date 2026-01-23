@@ -59,3 +59,23 @@ Solution by Bori Krisztián Sándor
         dotnet run <folder_path> <json_server_url>
         ```
         **Example: ```dotnet run C:/Users/user/Desktop/Gurum http://localhost:3000/projects```**
+
+### REST API
+
+1. Change the working directory to the REST API
+    ```sh
+    cd ./RESTAPI/
+    ```
+    
+2. *It is possible to run the program both with the executable manually or with the dotnet command*
+    - Executable
+        ```sh
+        cd ./bin/Release/net8.0/
+        ./RESTAPI.exe --urls <rest_api_url>
+        ```
+        **Example: ```./RESTAPI.exe --urls http://localhost:3001```**
+    - Dotnet
+        ```sh
+        dotnet run --urls <rest_api_url>
+        ```
+        **Example: ```dotnet run --urls http://localhost:3001```**
