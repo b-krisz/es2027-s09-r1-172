@@ -36,7 +36,9 @@ Solution by Bori Krisztián Sándor
     ```sh
     npx json-server <database_file>
     ```
-    Defaultly the JSON-SERVER runs on port **3000**
+    **Example: ```npx json-server ./database.json```**
+
+    *Defaultly the JSON-SERVER runs on port **3000***
 
 ### Command Line Tool
 
@@ -51,7 +53,9 @@ Solution by Bori Krisztián Sándor
         cd ./bin/Release/net8.0/
         ./CommandLineTool.exe <folder_path> <json_server_url>
         ```
+        **Example: ```./CommandLineTool.exe  C:/Users/user/Desktop/Gurum http://localhost:3000/projects```**
     - Dotnet
         ```sh
         dotnet run <folder_path> <json_server_url>
         ```
+        **Example: ```dotnet run C:/Users/user/Desktop/Gurum http://localhost:3000/projects```**
