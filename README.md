@@ -36,7 +36,7 @@ Solution by Bori Krisztián Sándor
     ```sh
     npx json-server <database_file>
     ```
-    **Example: ```npx json-server ./database.json```**
+    **e.g. ```npx json-server ./database.json```**
 
     *Defaultly the JSON-SERVER runs on port **3000***
 
@@ -53,12 +53,12 @@ Solution by Bori Krisztián Sándor
         cd ./bin/Release/net8.0/
         ./CommandLineTool.exe <folder_path> <json_server_url>
         ```
-        **Example: ```./CommandLineTool.exe  C:/Users/user/Desktop/Gurum http://localhost:3000/projects```**
+        **e.g. ```./CommandLineTool.exe  C:/Users/user/Desktop/Gurum http://localhost:3000/projects```**
     - Dotnet
         ```sh
         dotnet run <folder_path> <json_server_url>
         ```
-        **Example: ```dotnet run C:/Users/user/Desktop/Gurum http://localhost:3000/projects```**
+        **e.g. ```dotnet run C:/Users/user/Desktop/Gurum http://localhost:3000/projects```**
 
 ### REST API
 
@@ -73,9 +73,9 @@ Solution by Bori Krisztián Sándor
         cd ./bin/Release/net8.0/
         ./RESTAPI.exe --urls <rest_api_url>
         ```
-        **Example: ```./RESTAPI.exe --urls http://localhost:3001```**
+        **e.g. ```./RESTAPI.exe --urls http://localhost:3001```**
     - Dotnet
         ```sh
         dotnet run --urls <rest_api_url>
         ```
-        **Example: ```dotnet run --urls http://localhost:3001```**
+        **e.g. ```dotnet run --urls http://localhost:3001```**
