@@ -6,7 +6,6 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-// TODO: UNKNOWN ISSUE, SOMEHOW A FEW POST REQUESTS PRODUCED OBJECTS WITH EMPTY STRINGS AS NAMES
 // TODO: UNIT TESTING
 // TODO: MORE EXPLICIT ERROR HANDLING, AND ERROR MESSAGES
 
@@ -20,15 +19,15 @@ namespace CommandLineTool
             // Argument check
             if (args.Length != 2)
             {
-                WriteLineColor(Console.Error, ConsoleColor.DarkYellow,
+                Util.WriteLineColor(Console.Error, ConsoleColor.DarkYellow,
                     $"[X] usage: {AppDomain.CurrentDomain.FriendlyName}.exe <folder_path> <json_server_url>");
                 
-                WriteLineColor(Console.Error, ConsoleColor.Yellow,
+                Util.WriteLineColor(Console.Error, ConsoleColor.Yellow,
                     $"[!] e.g  : {AppDomain.CurrentDomain.FriendlyName}.exe C:/Users/user/Desktop/Gurum http://localhost:3000/projects");
 
                 return; // exiting the program
             }
-            WriteLineColor(Console.Out, ConsoleColor.Green, "[OK] Arguments passed successfully...");
+            Util.WriteLineColor(Console.Out, ConsoleColor.Green, "[OK] Arguments passed successfully...");
             
             
             string folderPath = Path.GetFullPath(args[0]);
@@ -38,7 +37,7 @@ namespace CommandLineTool
             
             if (TryLoadLockFile(out string data)) // If we are able to retrieve a lockfile, giving a chance to use it, it creates a project from it 
             {
-                WriteColor(Console.Out, ConsoleColor.DarkGreen, $"[!] Found lockfile... Do you want to open it and resume the last session? (y/n): ");
+                Util.WriteColor(Console.Out, ConsoleColor.DarkGreen, $"[!] Found lockfile... Do you want to open it and resume the last session? (y/n): ");
                 if (Console.ReadKey().Key == ConsoleKey.Y)
                 {
                     Console.WriteLine();
@@ -47,7 +46,7 @@ namespace CommandLineTool
                 else
                 {
                     Console.WriteLine();
-                    WriteLineColor(Console.Out, ConsoleColor.DarkGreen, $"[!] Skipping lockfile...");
+                    Util.WriteLineColor(Console.Out, ConsoleColor.DarkGreen, $"[!] Skipping lockfile...");
                 }
             }
             
@@ -62,21 +61,21 @@ namespace CommandLineTool
 
                 // Trying to a session into a lockfile
                 if (TrySaveLockFile(JsonSerializer.Serialize(project)))
-                    WriteLineColor(Console.Out, ConsoleColor.Green, "[OK] Successfully saved lockfile...");
-                else WriteLineColor(Console.Error, ConsoleColor.DarkYellow, "[x] Failed to save lockfile!");
+                    Util.WriteLineColor(Console.Out, ConsoleColor.Green, "[OK] Successfully saved lockfile...");
+                else Util.WriteLineColor(Console.Error, ConsoleColor.DarkYellow, "[x] Failed to save lockfile!");
             }
 
 
-            if (UploadJson(jsonUrl, JsonSerializer.Serialize(project)).Result)
+            if (TryUploadJson(jsonUrl, JsonSerializer.Serialize(project)).Result)
             {
-                WriteLineColor(Console.Out, ConsoleColor.Green, "[OK] Successfully uploaded JSON...");
+                Util.WriteLineColor(Console.Out, ConsoleColor.Green, "[OK] Successfully uploaded JSON...");
                 if (TryDeleteLockFile())
-                    WriteLineColor(Console.Out, ConsoleColor.DarkGreen, "[!] Successfully deleted lockfile...");
+                    Util.WriteLineColor(Console.Out, ConsoleColor.DarkGreen, "[!] Successfully deleted lockfile...");
                 else
-                    WriteLineColor(Console.Error, ConsoleColor.DarkYellow, "[x] Failed to delete lockfile!");
+                    Util.WriteLineColor(Console.Error, ConsoleColor.DarkYellow, "[x] Failed to delete lockfile!");
             }
             else
-                WriteLineColor(Console.Error, ConsoleColor.DarkYellow, "[x] Failed to upload JSON!");
+                Util.WriteLineColor(Console.Error, ConsoleColor.DarkYellow, "[x] Failed to upload JSON!");
         }
         
         private static string[]? LoadFiles(string folderPath)
@@ -84,10 +83,10 @@ namespace CommandLineTool
             // Checking if the directory exists
             if (!Directory.Exists(folderPath))
             {
-                WriteLineColor(Console.Error, ConsoleColor.DarkYellow, $"[X] Directory \"{folderPath}\" does not exist!");
+                Util.WriteLineColor(Console.Error, ConsoleColor.DarkYellow, $"[X] Directory \"{folderPath}\" does not exist!");
                 return null;
             }
-            WriteLineColor(Console.Out, ConsoleColor.Green, $"[OK] Directory exists...");
+            Util.WriteLineColor(Console.Out, ConsoleColor.Green, $"[OK] Directory exists...");
             
             
             // Ordering the files, for easier indices
@@ -97,10 +96,10 @@ namespace CommandLineTool
             // After filtering out the files for map.png and map.txt, if the Length is not 2, its obvious that one of them is missing
             if (files.Length != 2)
             {
-                WriteLineColor(Console.Error, ConsoleColor.DarkYellow, $"[X] Directory \"{folderPath}\" does not contains map.png nor map.txt!");
+                Util.WriteLineColor(Console.Error, ConsoleColor.DarkYellow, $"[X] Directory \"{folderPath}\" does not contains map.png nor map.txt!");
                 return null;
             }
-            WriteLineColor(Console.Out, ConsoleColor.Green, $"[OK] Files map.png and map.txt found in the directory...");
+            Util.WriteLineColor(Console.Out, ConsoleColor.Green, $"[OK] Files map.png and map.txt found in the directory...");
 
             return files;
         }
@@ -135,14 +134,15 @@ namespace CommandLineTool
             }
             catch (Exception)
             {
-                WriteLineColor(Console.Error, ConsoleColor.DarkYellow, $"[X] Failed to create project!");
+                Util.WriteLineColor(Console.Error, ConsoleColor.DarkYellow, $"[X] Failed to create project!");
                 return null;
             }
-            WriteLineColor(Console.Out, ConsoleColor.Green, $"[OK] {projectName} Project created...");
+            Util.WriteLineColor(Console.Out, ConsoleColor.Green, $"[OK] {projectName} Project created...");
             
             return new Project(projectName, projectMapData, projectCells);
         }
-        private static async Task<bool> UploadJson(string jsonUrl, string data)
+        
+        private static async Task<bool> TryUploadJson(string jsonUrl, string data)
         {
             try
             {
@@ -154,7 +154,6 @@ namespace CommandLineTool
             {
                 return false;
             }
-
             return true;
         }
         private static bool TryLoadLockFile(out string data)
@@ -210,17 +209,6 @@ namespace CommandLineTool
 
             return true;
         }
-        private static void WriteLineColor(TextWriter tw, ConsoleColor color, string s)
-        {
-            Console.ForegroundColor = color;
-            tw.WriteLine(s);
-            Console.ResetColor();
-        }
-        private static void WriteColor(TextWriter tw, ConsoleColor color, string s)
-        {
-            Console.ForegroundColor = color;
-            tw.Write(s);
-            Console.ResetColor();
-        }
+        
     }   
 }
