@@ -1,10 +1,12 @@
-<header class="sm:rounded-3xl
+<header class="w-full
+               sm:rounded-3xl
                bg-blue-950
                sm:m-5
                p-5
                flex flex-row between
                justify-center sm:justify-start">
-  <img ngSrc="/Wind Turbine.png" alt="mip" height="40" width="40">
+  <img class="hidden dark:block" ngSrc="/WindTurbineLight.png" alt="Wind Turbine Light" height="40" width="40">
+  <img class="block dark:hidden" ngSrc="/WindTurbineDark.png" alt="Wind Turbine Dark" height="40" width="40">
   <h1 class="text-xl sm:text-3xl">Wind Park Planner</h1>
 </header>
 <router-outlet/>
