@@ -18,7 +18,7 @@ export class IndexPage {
   searchTerm = new FormControl("");
 
   constructor(private changeDetector: ChangeDetectorRef) {
-    this.searchTerm.valueChanges.pipe(debounceTime(200)).subscribe(st => {this.search(st ?? "")});
+    this.searchTerm.valueChanges.pipe(debounceTime(400)).subscribe(st => {this.search(st ?? "")});
   }
 
   ngOnInit() {

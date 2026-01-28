@@ -5,12 +5,15 @@
   <input id="searchTerm" class="w-full p-5 rounded-3xl" type="text" placeholder="Search..." [formControl]="searchTerm">
 </nav>
 <main class="max-w-[640px]
+             max-h-[640px]
              m-auto mt-10
              p-5
              sm:rounded-3xl
              bg-stone-400 dark:bg-blue-950
              flex flex-col items-center
-             text-sm sm:text-lg">
+             text-sm sm:text-lg
+             overflow-x-hidden
+             overflow-y-scroll">
   @for (project of projects; track project.id)
   {
     <div class="w-full
