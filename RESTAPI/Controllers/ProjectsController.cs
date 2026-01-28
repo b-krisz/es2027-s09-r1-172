@@ -16,7 +16,7 @@ namespace RESTAPI.Controllers
             _httpClientFactory = httpClientFactory;
         }
         
-        [HttpGet]
+        [HttpGet("search")]
         public async Task<IActionResult> Get()
         {
             try
