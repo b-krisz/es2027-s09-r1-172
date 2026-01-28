@@ -26,6 +26,12 @@ internal class Program
         builder.Services.AddAuthorization();
         builder.Services.AddControllers();
         
+        // TODO: CONFIG.CS REDUNDANT???
+        builder.Services.AddHttpClient("JsonApi", client =>
+        {
+            client.BaseAddress = new Uri(jsonUrl);
+        });
+        
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
@@ -46,15 +52,14 @@ internal class Program
             app.UseSwaggerUI();
         }
         
-        app.UseHttpsRedirection();
-        
         app.UseAuthorization();
         app.MapControllers();
+        
         app.UseCors();
         app.Run();
     }
 
-    private static bool TryParseArgs(string[] args, out string jsonUrl, out string frUrl)
+    private static bool TryParseArgs(string[] args, out string jsonUrl, out string frUrl) // TODO: MAKING ARGUMENTS OPTIONAL, NOT REQUIRED, FOR DEFAULT VALUES
     {
         jsonUrl = "";
         frUrl = "";
@@ -84,7 +89,7 @@ internal class Program
             Util.WriteLineColor(Console.Error, ConsoleColor.DarkYellow, $"[X] No JSONSERVER URL provided!");
             return false;
         }
-        Util.WriteLineColor(Console.Out, ConsoleColor.Green, $"[OK] JSONSERVER URL Loaded: {jsonUrl}");
+        Util.WriteLineColor(Console.Out, ConsoleColor.Green, $"[OK] JSONSERVER URL Loaded: {parsedJson}");
         jsonUrl = parsedJson;
         
         OptionResult? frResult = parseResult.GetResult(jsonOption);
@@ -95,7 +100,7 @@ internal class Program
             Util.WriteLineColor(Console.Error, ConsoleColor.DarkYellow, $"[X] No FRONTEND URL provided!");
             return false;
         }
-        Util.WriteLineColor(Console.Out, ConsoleColor.Green, $"[OK] FRONTEND URL Loaded: {frUrl}");
+        Util.WriteLineColor(Console.Out, ConsoleColor.Green, $"[OK] FRONTEND URL Loaded: {parsedFr}");
         frUrl = parsedFr;
         
         return true;
