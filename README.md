@@ -25,7 +25,7 @@ Solution by Bori Krisztián Sándor
     npm install
     ```
 
-### UI
+### UI (Front-end)
 
 1. Change the working directory to the UI
     ```sh
@@ -73,7 +73,7 @@ Solution by Bori Krisztián Sándor
         ```
         **e.g. ```dotnet run C:/Users/user/Desktop/Gurum http://localhost:3000/projects```**
 
-### REST API
+### REST API (Back-end)
 
 1. Change the working directory to the REST API
     ```sh
@@ -97,4 +97,16 @@ Solution by Bori Krisztián Sándor
         ```
         **e.g. ```dotnet run --urls http://localhost:3001 --json http://localhost:3000 --fr http://localhost:3002```**
 
-### UI
+### UI (Front-end)
+
+1. Change the working directory to the UI
+    ```sh
+    cd ./UI/
+    ```
+2. Start the UI (Angular Server) 
+
+    The UI (Angular Server) itself defaulty runs on **http://localhost:3002**
+    ```sh
+    npx ng serve --host <host> --port <port>
+    ```
+    **e.g. ```npx ng serve --host localhost --port 3002```**
