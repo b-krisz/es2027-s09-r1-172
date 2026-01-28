@@ -45,12 +45,13 @@ Solution by Bori Krisztián Sándor
     cd ./JSON-SERVER/
     ```
 2. Start the JSON-SERVER with the database
-    ```sh
-    npx json-server <database_file>
-    ```
-    **e.g. ```npx json-server ./database.json```**
 
-    *Defaultly the JSON-SERVER runs on port **3000***
+    The JSON SERVER itself defaulty runs on **http://localhost:3000**
+    ```sh
+    npx json-server <database_file> --port <port>
+    ```
+    **e.g. ```npx json-server ./database.json --port 3000```**
+
 
 ### Command Line Tool
 
@@ -80,16 +81,20 @@ Solution by Bori Krisztián Sándor
     ```
     
 2. *It is possible to run the program both with the executable manually or with the dotnet command*
+    
+    It is necceseary to set both the **FRONTEND SERVER**'s url and the **JSON SERVER**'s URL
+    
+    The REST API itself defaulty runs on **http://localhost:3001**
     - Executable
         ```sh
         cd ./bin/Release/net8.0/
-        ./RESTAPI.exe --urls <rest_api_url>
+        ./RESTAPI.exe --urls <rest_api_url> --json <json_server_url> --fr <frontend_server_url>
         ```
-        **e.g. ```./RESTAPI.exe --urls http://localhost:3001```**
+        **e.g. ```./RESTAPI.exe --urls http://localhost:3001 --json http://localhost:3000 --fr http://localhost:3002```**
     - Dotnet
         ```sh
-        dotnet run --urls <rest_api_url>
+        dotnet run --urls <rest_api_url> --json <json_server_url> --fr <frontend_server_url>
         ```
-        **e.g. ```dotnet run --urls http://localhost:3001```**
+        **e.g. ```dotnet run --urls http://localhost:3001 --json http://localhost:3000 --fr http://localhost:3002```**
 
 ### UI

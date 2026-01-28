@@ -15,6 +15,22 @@ namespace RESTAPI.Controllers
         {
             _httpClientFactory = httpClientFactory;
         }
+
+        [HttpGet("paginate")]
+        public async Task<IActionResult> GetPaginate()
+        {
+            try
+            {
+                HttpClient client = _httpClientFactory.CreateClient("JsonApi");
+                HttpResponseMessage response = await client.GetAsync("projects");
+                
+                return Ok(await response.Content.ReadAsStringAsync());
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
         
         [HttpGet("search")]
         public async Task<IActionResult> GetSearch([FromQuery] string query)
