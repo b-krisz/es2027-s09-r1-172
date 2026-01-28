@@ -1,6 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
+import {Project} from '../models/project';
 
 @Injectable({
   providedIn: 'root',
@@ -8,10 +9,8 @@ import {Observable} from 'rxjs';
 export class ApiService {
   private http: HttpClient = inject(HttpClient);
 
-  search()
+  search(searchQuery: string): Observable<Project[]>
   {
-    this.http.get("/api/projects/search").subscribe(data => {
-      return data;
-    })
+    return this.http.get<Project[]>("/api/projects/search?query=" + searchQuery);
   }
 }

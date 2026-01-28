@@ -17,18 +17,18 @@ namespace RESTAPI.Controllers
         }
         
         [HttpGet("search")]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> GetSearch([FromQuery] string query)
         {
             try
             {
                 HttpClient client = _httpClientFactory.CreateClient("JsonApi");
-                HttpResponseMessage response = await client.GetAsync("projects");
+                HttpResponseMessage response = await client.GetAsync($"projects?name_like={query}");
                 
                 return Ok(await response.Content.ReadAsStringAsync());
             }
             catch (Exception e)
             {
-                return NotFound(e.Message);                
+                return BadRequest(e.Message);                
             }
         }
     }

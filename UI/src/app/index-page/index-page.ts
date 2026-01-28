@@ -1,17 +1,41 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, ChangeDetectorRef} from '@angular/core';
 import {ApiService} from '../../services/api-service';
+import {Project} from '../../models/project';
+import {FormControl, ReactiveFormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-index-page',
-  imports: [],
+  imports: [
+    ReactiveFormsModule
+  ],
   templateUrl: './index-page.html',
   styleUrl: './index-page.css',
 })
 export class IndexPage {
   private apiService: ApiService = inject(ApiService);
+  protected projects: Project[] = [];
+  searchTerm = new FormControl("");
 
-  ngOnInit()
-  {
-    this.apiService.search();
+  constructor(private changeDetector: ChangeDetectorRef) {
+    this.searchTerm.valueChanges.subscribe(st => {this.search(st ?? "")})
   }
+
+  ngOnInit() {
+    this.search("");
+  }
+
+  private search(searchQuery: string): void {
+    this.apiService.search(searchQuery).subscribe({
+      next: data => {
+        this.projects = [...data];
+      },
+      error: err => {
+        console.error(err);
+      },
+      complete: () => {
+        this.changeDetector.detectChanges();
+      }
+    });
+  }
+
 }
