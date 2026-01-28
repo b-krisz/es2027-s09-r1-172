@@ -1,4 +1,4 @@
-﻿namespace CommandLineTool
+﻿namespace CommandLineTool.Models
 {
     public class Cell
     {

@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using CommandLineTool.Models;
 
 // TODO: UNIT TESTING
 // TODO: MORE EXPLICIT ERROR HANDLING, AND ERROR MESSAGES

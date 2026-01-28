@@ -1,7 +1,8 @@
-namespace CommandLineTool
+namespace CommandLineTool.Models
 {
     public class Project
     {
+	    public string id { get; set; }
         public string name {get; set;}
         public string mapData {get; set;}
         public Cell[] cells {get; set;}
