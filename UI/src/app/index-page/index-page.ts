@@ -2,6 +2,7 @@ import {Component, inject, ChangeDetectorRef} from '@angular/core';
 import {ApiService} from '../../services/api-service';
 import {Project} from '../../models/project';
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
+import {debounceTime} from 'rxjs';
 
 @Component({
   selector: 'app-index-page',
@@ -17,7 +18,7 @@ export class IndexPage {
   searchTerm = new FormControl("");
 
   constructor(private changeDetector: ChangeDetectorRef) {
-    this.searchTerm.valueChanges.subscribe(st => {this.search(st ?? "")})
+    this.searchTerm.valueChanges.pipe(debounceTime(200)).subscribe(st => {this.search(st ?? "")});
   }
 
   ngOnInit() {
