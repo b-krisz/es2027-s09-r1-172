@@ -16,22 +16,22 @@ Solution by Bori Krisztián Sándor
 
 ### JSON-SERVER
 
-1. Change the working directory to the JSON-SERVER
+1. Change the working directory to the **JSON-SERVER**
     ```sh
     cd ./JSON-SERVER/
     ```
-2. Install JSON-SERVER and its dependencies
+2. Install **JSON-SERVER** and its *dependencies*
     ```sh
     npm install
     ```
 
 ### UI (Front-end)
 
-1. Change the working directory to the UI
+1. Change the working directory to the **UI**
     ```sh
     cd ./UI/
     ```
-2. Install UI (Angular) and its dependencies
+2. Install **UI (Angular)** and its *dependencies*
     ```sh
     npm install
     ```
@@ -40,7 +40,7 @@ Solution by Bori Krisztián Sándor
 
 ### JSON-SERVER
 
-1. Change the working directory to the JSON-SERVER
+1. Change the working directory to the **JSON-SERVER**
     ```sh
     cd ./JSON-SERVER/
     ```
@@ -55,7 +55,7 @@ Solution by Bori Krisztián Sándor
 
 ### Command Line Tool
 
-1. Change the working directory to the Command Line Tool
+1. Change the working directory to the **Command Line Tool**
     ```sh
     cd ./CommandLineTool/
     ```
@@ -75,7 +75,7 @@ Solution by Bori Krisztián Sándor
 
 ### REST API (Back-end)
 
-1. Change the working directory to the REST API
+1. Change the working directory to the **REST API**
     ```sh
     cd ./RESTAPI/
     ```
@@ -99,11 +99,30 @@ Solution by Bori Krisztián Sándor
 
 ### UI (Front-end)
 
-1. Change the working directory to the UI
+1. Change the working directory to the **UI**
     ```sh
     cd ./UI/
     ```
-2. Start the UI (Angular Server) 
+2. Open the **proxy.conf.json** ( *./src/proxy.conf.json* )
+    ```json
+    {
+        "/api/**": {
+            "target": "<backend_url>",
+            "secure": false
+        }
+    }
+    ```
+3. Change the **target** to the url of the **REST-API**
+
+    ```json
+    {
+        "/api/**": {
+            "target": "http://localhost:3001",
+            "secure": false
+        }
+    }
+    ```
+4. Start the UI (Angular Server) 
 
     The UI (Angular Server) itself defaulty runs on **http://localhost:3002**
     ```sh
