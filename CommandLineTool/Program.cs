@@ -30,7 +30,7 @@ namespace CommandLineTool
             Util.WriteLineColor(Console.Out, ConsoleColor.Green, "[OK] Arguments passed successfully...");
             
             
-            string folderPath = Path.GetFullPath(args[0]);
+            string folderPath = Path.GetFullPath(args[0]) + '\\';
             string jsonUrl = args[1];
             Project? project = null;
 
@@ -105,7 +105,7 @@ namespace CommandLineTool
         }
         private static Project? CreateProject(string folderPath, string[] filePaths)
         {
-            string projectName = Path.GetFileName(folderPath);
+            string projectName = Path.GetFileName(Path.GetDirectoryName(folderPath)) ?? "ProjectName";
             string projectMapData = "data:image/png;base64,"+Convert.ToBase64String(File.ReadAllBytes(filePaths[0]));
             Cell[] projectCells = new Cell[400]; // 20x20 grid
             try
