@@ -9,12 +9,16 @@ import {Project} from '../models/project';
 export class ApiService {
   private http: HttpClient = inject(HttpClient);
 
-  select(projectId: string | null): Observable<Project> {
+  select(projectId: string): Observable<Project> {
     return this.http.get<Project>("/api/projects/select?id=" + projectId);
   }
 
   search(searchQuery: string): Observable<Project[]>
   {
     return this.http.get<Project[]>("/api/projects/search?query=" + searchQuery);
+  }
+
+  toggleTurbine(projectId: string, x: number, y: number): Observable<any> {
+    return this.http.put("/api/projects/toggleTurbine?id="+projectId+"&x="+x+"&y="+y, null);
   }
 }
