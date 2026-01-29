@@ -70,6 +70,31 @@ export class ProjectPage {
     });
   }
 
+  private applyColors(turbines: Cell[]): void {
+    if (turbines.length === 0) return;
+
+    const powers = turbines.map(t => t.powerOutput || 0);
+    const minP = Math.min(...powers);
+    const maxP = Math.max(...powers);
+
+    for (const t of turbines) {
+      if (maxP - minP < 0.01) {
+        t.color = "rgba(0, 255, 0, 0.5)";
+      } else {
+        const ratio = (t.powerOutput! - minP) / (maxP - minP);
+        let r, g;
+        if (ratio < 0.5) {
+          r = 255;
+          g = Math.round(510 * ratio);
+        } else {
+          r = Math.round(510 * (1 - ratio));
+          g = 255;
+        }
+        t.color = `rgba(${r}, ${g}, 0, 0.5)`;
+      }
+    }
+  }
+
   protected toggleSimulation(): void {
     this.simulationActive = !this.simulationActive;
     if (!this.simulationActive) {
