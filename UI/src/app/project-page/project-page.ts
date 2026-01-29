@@ -70,6 +70,40 @@ export class ProjectPage {
     });
   }
 
+  protected runSimulation(): void {
+    if (!this.project || !this.project.cells) return;
+
+    if (!this.simulationActive) {
+      this.clearSimulation();
+      return;
+    }
+
+    const direction = this.windDirection.value?.toLowerCase() || "";
+    let speed = this.clampWind();
+
+    const {dx, dy} = this.getWindOffsets(direction);
+
+    // Reset current run
+    this.totalPower = 0;
+    this.turbineCount = 0;
+    const turbines: Cell[] = [];
+
+    for (const cell of this.project.cells) {
+      this.setSimulation(cell, speed);
+      if (cell.hasTurbine) {
+        this.turbineCount++;
+        turbines.push(cell);
+      }
+    }
+
+    if (direction !== "") {
+      this.windOutputs(direction, dx, dy, speed);
+    }
+
+    this.applyColors(turbines);
+    this.changeDetector.detectChanges();
+  }
+
   private clearSimulation(): void {
     if (!this.project || !this.project.cells) return;
     this.turbineCount = this.project.cells.filter(c => c.hasTurbine).length;
