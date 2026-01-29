@@ -6,6 +6,10 @@
         public int y { get; set; }
         public string type {get; set;}
         public bool hasTurbine {get; set;}
+        public double? powerOutput { get; set; }
+        public double? modifiedWindSpeed { get; set; }
+        public string[]? modifiers { get; set; }
+        public string? color { get; set; }
 
         public Cell(int x, int y, string type, bool hasTurbine)
         {

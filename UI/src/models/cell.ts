@@ -4,4 +4,8 @@ export interface Cell
     y: number;
     type: string;
     hasTurbine: boolean;
+    powerOutput?: number;
+    modifiedWindSpeed?: number;
+    modifiers?: string[];
+    color?: string;
 }
