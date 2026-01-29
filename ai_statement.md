@@ -7,7 +7,7 @@ As a competitor I understand that:
 
 ## I used AI in the following manner (select one or more):
 * [ ] I didn't use AI in any way shape or form
-* [ ] I used Chat AIs like ChatGPT, Gemini etc
+* [X] I used Chat AIs like ChatGPT, Gemini etc
 * [ ] I used AI Agents like Antigravity, Cursor etc
  
 ## I used AI to help me in the following (select one or more):
@@ -17,22 +17,10 @@ As a competitor I understand that:
 * [ ] I used AI to implement me functions which I later reworked and inserted into the code
 * [ ] I used AI to implement the main parts of the Test Project for me and I finalised the results myself
 * [ ] I made the solution using only AI
-* [ ] Other (please specify): ...
+* [X] Other (please specify): I used AI to learn about a very specific topic and feature of my tech stack
 
 ## During my usage I used the following prompts (describe up to 5 prompts):
 
 1.
-* AI used: OpenAI 5.1
-* Prompt: ...
-2.     
-* AI used: OpenAI 5.1
-* Prompt: ...
-3.     
-* AI used: OpenAI 5.1
-* Prompt: ...
-4.     
-* AI used: OpenAI 5.1
-* Prompt: ...
-5.     
-* AI used: OpenAI 5.1
-* Prompt: ...
+* AI used: GPT5 (Perplexity)
+* Prompt: Hey there! I am currently making a project and I need your help. Can you explain to me how does Angular ActivatedRoute and Routing parameters work? Thanks!
