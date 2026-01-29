@@ -90,6 +90,19 @@ export class ProjectPage {
     return speed;
   }
 
+  private getWindOffsets(direction: string): { dx: number, dy: number } {
+    let dx = 0, dy = 0;
+    if (direction === "n") { dy = 1; dx = 0; }
+    else if (direction === "s") { dy = -1; dx = 0; }
+    else if (direction === "e") { dx = 1; dy = 0; }
+    else if (direction === "w") { dx = -1; dy = 0; }
+    else if (direction === "ne") { dx = 1; dy = 1; }
+    else if (direction === "se") { dx = 1; dy = -1; }
+    else if (direction === "sw") { dx = -1; dy = -1; }
+    else if (direction === "nw") { dx = -1; dy = 1; }
+    return {dx, dy};
+  }
+
   private setSimulation(cell: Cell, speed: number): void {
     cell.powerOutput = 0;
     cell.modifiedWindSpeed = speed;
