@@ -67,7 +67,7 @@ namespace RESTAPI.Controllers
         }
 
         [HttpPut("toggleTurbine")]
-        public async Task<IActionResult> PatchToggleTurbine([FromQuery] string id, [FromQuery] int x, [FromQuery] int y)
+        public async Task<IActionResult> PutToggleTurbine([FromQuery] string id, [FromQuery] int x, [FromQuery] int y)
         {
             try
             {
