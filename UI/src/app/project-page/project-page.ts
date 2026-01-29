@@ -25,11 +25,12 @@ export class ProjectPage {
   protected state: string = "Loading...";
   protected project: Project | null = null;
 
-  // Simulation
+  // -- Simulation --
   protected simulationActive: boolean = false;
   protected totalPower: number = 0;
   protected turbineCount: number = 0;
   protected selectedTurbine: Cell | null = null;
+  // --            --
 
   constructor(private changeDetector: ChangeDetectorRef) {
     this.id = this.route.snapshot.paramMap.get('id')!;
