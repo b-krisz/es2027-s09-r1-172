@@ -1,15 +1,29 @@
- <section class="sm:m-5
-               p-3
-               sm:rounded-3xl
-               bg-stone-400 dark:bg-blue-950
-               flex flex-row justify-between">
-    @if (project != null)
-    {
-      <h3 class="text-lg sm:text-2xl">{{this.project?.name}}</h3>
-      <h3 class="text-lg sm:text-2xl">{{this.project?.id}}</h3>
-    }
-    @else
-    {
-      <h3 class="text-lg sm:text-2xl">{{this.state}}</h3>
-    }
-  </section>
+<nav class="max-w-2xs
+            p-3
+            m-auto
+            rounded-b-2xl
+            bg-stone-400 dark:bg-blue-950">
+  <h2 class="text-xl text-center">{{this.project?.name}}</h2>
+  <h2 class="text-xs text-center">({{this.project?.id}})</h2>
+</nav>
+<main class="max-w-full
+             max-h-[700px]
+             mt-10
+             p-5
+             bg-stone-400 dark:bg-blue-950
+             flex flex-col lg:flex-row
+             items-center lg:items-start
+             lg:justify-between
+             text-sm sm:text-lg">
+  <div class="relative max-w-[640px] w-full">
+    <img class="w-full" src="{{this.project?.mapData}}" alt="Project Map">
+    <div class="w-full absolute left-0 top-0 h-full grid grid-cols-20">
+      @for (cell of this.project?.cells; track `${cell.x}:${cell.y}`)
+      {
+          <img class="w-full" src="/Grid.png" alt="Grid" srcset="">
+      }
+    </div>
+  </div>
+  <div class="max-w-[640px] w-full">.
+  </div>
+</main>

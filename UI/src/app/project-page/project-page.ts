@@ -2,12 +2,11 @@ import {ChangeDetectorRef, Component, inject} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {ApiService} from '../../services/api-service';
 import {Project} from '../../models/project';
-import {NgOptimizedImage} from '@angular/common';
-
+import {ReactiveFormsModule} from '@angular/forms';
 @Component({
   selector: 'app-project-page',
   imports: [
-    NgOptimizedImage
+    ReactiveFormsModule
   ],
   templateUrl: './project-page.html',
   styleUrl: './project-page.css',
