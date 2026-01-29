@@ -83,6 +83,13 @@ export class ProjectPage {
     this.changeDetector.detectChanges();
   }
 
+  private calculatePowerOutput(cell: Cell): void {
+    const v = cell.modifiedWindSpeed!;
+    if (v < 3.5) cell.powerOutput = 0;
+    else if (v > 25) cell.powerOutput = 600;
+    else cell.powerOutput = 600 * Math.pow((v - 3.5) / (25 - 3.5), 3);
+  }
+
   private applyColors(turbines: Cell[]): void {
     if (turbines.length === 0) return;
 
