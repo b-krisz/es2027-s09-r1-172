@@ -83,6 +83,51 @@ export class ProjectPage {
     this.changeDetector.detectChanges();
   }
 
+  private applyEnvironmentalModifiers(current: Cell, ix: number, iy: number, dx: number, dy: number, speed: number): void {
+    if (!this.project || !this.project.cells) return;
+
+    let modifierPercentage = 0;
+
+    for (let i = 1; i <= 2; i++) {
+      const ux = ix - dx * i;
+      const uy = iy - dy * i;
+      if (ux >= 0 && ux < 20 && uy >= 0 && uy < 20) {
+        if (this.project.cells[ux + uy * 20].type === "Lake") {
+          modifierPercentage += 20;
+          current.modifiers?.push("+20% Lake");
+          break;
+        }
+      }
+    }
+
+    for (let i = 1; i <= 5; i++) {
+      const ux = ix - dx * i;
+      const uy = iy - dy * i;
+      if (ux >= 0 && ux < 20 && uy >= 0 && uy < 20) {
+        if (this.project.cells[ux + uy * 20].type === "Mountain") {
+          modifierPercentage -= 30;
+          current.modifiers?.push("-30% Mountain");
+          break;
+        }
+      }
+    }
+
+    for (let i = 1; i <= 3; i++) {
+      const ux = ix - dx * i;
+      const uy = iy - dy * i;
+      if (ux >= 0 && ux < 20 && uy >= 0 && uy < 20) {
+        if (this.project.cells[ux + uy * 20].hasTurbine) {
+          modifierPercentage -= 15;
+          current.modifiers?.push("-15% Wake Zone");
+          break;
+        }
+      }
+    }
+
+    current.modifiedWindSpeed = speed * (1 + modifierPercentage / 100);
+    if (current.modifiedWindSpeed! < 0) current.modifiedWindSpeed = 0;
+  }
+
   private calculatePowerOutput(cell: Cell): void {
     const v = cell.modifiedWindSpeed!;
     if (v < 3.5) cell.powerOutput = 0;
