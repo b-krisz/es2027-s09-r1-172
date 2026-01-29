@@ -24,18 +24,27 @@
     </div>
   </div>
   <div class="max-w-[640px] mt-10 w-full flex flex-col items-center">
-    <h2 class="text-4xl">Simulation</h2>
+    <h2 class="text-4xl text-white">Simulation</h2>
+    <button (click)="toggleSimulation()"
+            [class]="simulationActive ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600'"
+            class="mt-4 px-6 py-2 text-white font-bold rounded-full transition-colors border-2 border-black z-50">
+      {{ simulationActive ? 'Stop Simulation' : 'Start Simulation' }}
+    </button>
+    <div class="w-full flex justify-around p-2 text-stone-200">
+      <span>Turbines: {{turbineCount}}</span>
+      <span>Total Power: {{totalPower.toFixed(2)}} kW</span>
+    </div>
     <select id="windDir" name="windDir"
             class="w-full p-5 rounded-b-3xl bg-blue-950 text-stone-400" [formControl]="windDirection">
       <option value="" selected disabled>Wind direction</option>
       <option value="n">North</option>
-      <option value="ne">North East</option>
+      <option value="ne">Northeast</option>
       <option value="e">East</option>
-      <option value="se">South East</option>
+      <option value="se">Southeast</option>
       <option value="s">South</option>
-      <option value="sw">South West</option>
+      <option value="sw">Southwest</option>
       <option value="w">West</option>
-      <option value="nw">North West</option>
+      <option value="nw">Northwest</option>
     </select>
     <input id="searchTerm"
            class="w-full p-5 rounded-b-3xl"
