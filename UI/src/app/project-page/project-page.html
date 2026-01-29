@@ -1,2 +1,15 @@
-<p>project-page works!</p>
-<p>{{this.id}}</p>
+ <section class="sm:m-5
+               p-3
+               sm:rounded-3xl
+               bg-stone-400 dark:bg-blue-950
+               flex flex-row justify-between">
+    @if (project != null)
+    {
+      <h3 class="text-lg sm:text-2xl">{{this.project?.name}}</h3>
+      <h3 class="text-lg sm:text-2xl">{{this.project?.id}}</h3>
+    }
+    @else
+    {
+      <h3 class="text-lg sm:text-2xl">{{this.state}}</h3>
+    }
+  </section>
