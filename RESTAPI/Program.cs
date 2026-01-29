@@ -18,15 +18,12 @@ internal class Program
         {                
             return;
         }
-        Config.Application["jsonUrl"] =  jsonUrl;
-        Config.Application["frUrl"] =  frUrl;
         
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddAuthorization();
         builder.Services.AddControllers();
         
-        // TODO: CONFIG.CS REDUNDANT???
         builder.Services.AddHttpClient("JsonApi", client =>
         {
             client.BaseAddress = new Uri(jsonUrl);
