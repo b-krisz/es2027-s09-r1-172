@@ -22,6 +22,10 @@
       [name]="project.name" [id]="project.id" [routerLink]="['project', project.id]"/>
   }
   @empty {
-    <h2>No results...</h2>
+    @if (loading) {
+      <h2>Loading...</h2>
+    } @else {
+      <h2>No results...</h2>
+    }
   }
 </main>

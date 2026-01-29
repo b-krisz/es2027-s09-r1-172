@@ -19,6 +19,7 @@ import {RouterLink} from '@angular/router';
 export class IndexPage {
   private apiService: ApiService = inject(ApiService);
   protected projects: Project[] = [];
+  protected loading: boolean = false;
   searchTerm = new FormControl("");
 
   constructor(private changeDetector: ChangeDetectorRef) {
@@ -30,12 +31,16 @@ export class IndexPage {
   }
 
   private search(searchQuery: string): void {
+    this.loading = true;
     this.apiService.search(searchQuery).subscribe({
       next: data => {
         this.projects = [...data];
+        this.loading = false;
       },
       error: err => {
         console.error(err);
+        this.loading = false;
+        this.changeDetector.detectChanges();
       },
       complete: () => {
         this.changeDetector.detectChanges();
