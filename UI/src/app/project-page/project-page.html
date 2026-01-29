@@ -7,7 +7,6 @@
   <h2 class="text-xs text-center">({{this.project?.id}})</h2>
 </nav>
 <main class="max-w-full
-             max-h-[700px]
              mt-10
              p-5
              bg-stone-400 dark:bg-blue-950
@@ -18,12 +17,28 @@
   <div class="relative max-w-[640px] w-full">
     <img class="w-full" src="{{this.project?.mapData}}" alt="Project Map">
     <div class="w-full absolute left-0 top-0 h-full grid grid-cols-20">
-      @for (cell of this.project?.cells; track `${cell.x}:${cell.y}`)
+      @for (cell of this.project?.cells; track cell)
       {
-          <img class="w-full" src="/Grid.png" alt="Grid" srcset="">
+        <app-cell-component [cell]="cell" [cells]="this.project?.cells" (click)="toggleTurbine(cell.x, cell.y)"/>
       }
     </div>
   </div>
-  <div class="max-w-[640px] w-full">.
+  <div class="max-w-[640px] mt-10 w-full flex flex-col items-center">
+    <h2 class="text-4xl">Simulation</h2>
+    <select id="windDir" name="windDir"
+            class="w-full p-5 rounded-b-3xl bg-blue-950 text-stone-400" [formControl]="windDirection">
+      <option value="" selected disabled>Wind direction</option>
+      <option value="n">North</option>
+      <option value="ne">North East</option>
+      <option value="e">East</option>
+      <option value="se">South East</option>
+      <option value="s">South</option>
+      <option value="sw">South West</option>
+      <option value="w">West</option>
+      <option value="nw">North West</option>
+    </select>
+    <input id="searchTerm"
+           class="w-full p-5 rounded-b-3xl"
+           type="number" placeholder="Wind speed" [formControl]="windSpeed">
   </div>
 </main>
