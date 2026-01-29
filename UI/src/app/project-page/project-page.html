@@ -48,6 +48,23 @@
     </select>
     <input id="searchTerm"
            class="w-full p-5 rounded-b-3xl"
-           type="number" placeholder="Wind speed" [formControl]="windSpeed">
+           type="number" placeholder="Wind speed" [formControl]="windSpeed" min="0" max="40">
+
+    @if (selectedTurbine) {
+        <div class="mt-10 p-5 bg-stone-300 dark:bg-blue-900 rounded-xl w-full text-center">
+            <h3 class="text-2xl mb-2">Turbine Details ({{selectedTurbine.x}}, {{selectedTurbine.y}})</h3>
+            <p>Power Output: {{selectedTurbine.powerOutput?.toFixed(2)}} kW</p>
+            <p>Modified Wind Speed: {{selectedTurbine.modifiedWindSpeed?.toFixed(2)}} m/s</p>
+            <div class="mt-2">
+                <p class="font-bold">Modifiers:</p>
+                @for (mod of selectedTurbine.modifiers; track mod) {
+                    <div class="text-sm">{{mod}}</div>
+                } @empty {
+                    <div class="text-sm">No modifiers applied</div>
+                }
+            </div>
+            <button class="mt-4 p-2 bg-red-500 text-white rounded" (click)="selectedTurbine = null">Close</button>
+        </div>
+    }
   </div>
 </main>
