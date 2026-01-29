@@ -3,11 +3,15 @@ import {ApiService} from '../../services/api-service';
 import {Project} from '../../models/project';
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {debounceTime} from 'rxjs';
+import {ProjectComponent} from './project-component/project-component';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-index-page',
   imports: [
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ProjectComponent,
+    RouterLink
   ],
   templateUrl: './index-page.html',
   styleUrl: './index-page.css',

@@ -16,14 +16,8 @@
              overflow-y-scroll">
   @for (project of projects; track project.id)
   {
-    <div class="w-full
-              m-3 p-3
-              border rounded-xl
-            border-stone-950 dark:border-stone-400
-              flex flex-row justify-between">
-      <h2 class="font-bold m-2">{{project.name}}</h2>
-      <h2 class="italic m-2 overflow-hidden whitespace-nowrap text-ellipsis">{{project.id}}</h2>
-    </div>
+    <app-project-component class="w-full"
+      [name]="project.name" [id]="project.id" [routerLink]="['project', project.id]"/>
   }
   @empty {
     <h2>No results...</h2>
