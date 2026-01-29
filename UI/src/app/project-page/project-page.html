@@ -19,7 +19,7 @@
     <div class="w-full absolute left-0 top-0 h-full grid grid-cols-20">
       @for (cell of this.project?.cells; track cell)
       {
-        <app-cell-component [cell]="cell" [cells]="this.project?.cells" (click)="toggleTurbine(cell.x, cell.y)"/>
+        <app-cell-component [cell]="cell" [cells]="this.project?.cells" [windDirection]="simulationActive ? (this.windDirection.value ?? undefined) : undefined" (click)="handleCellClick(cell)"/>
       }
     </div>
   </div>
