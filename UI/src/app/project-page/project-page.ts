@@ -83,6 +83,12 @@ export class ProjectPage {
     this.changeDetector.detectChanges();
   }
 
+  private setSimulation(cell: Cell, speed: number): void {
+    cell.powerOutput = 0;
+    cell.modifiedWindSpeed = speed;
+    cell.modifiers = [];
+    cell.color = "rgba(0, 255, 0, 0.5)";
+  }
   private applyEnvironmentalModifiers(current: Cell, ix: number, iy: number, dx: number, dy: number, speed: number): void {
     if (!this.project || !this.project.cells) return;
 
