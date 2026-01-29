@@ -43,4 +43,18 @@ export class ProjectPage {
     });
   }
 
+  protected toggleTurbine(x: number, y: number): void {
+    this.apiService.toggleTurbine(this.id, x, y).subscribe({
+      next: data => {
+
+      },
+      error: err => {
+        console.error(err);
+      },
+      complete: () => {
+        this.select(this.id); // REFRESHING
+      }
+    });
+  }
+
 }
