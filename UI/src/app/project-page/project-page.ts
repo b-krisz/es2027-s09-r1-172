@@ -70,6 +70,31 @@ export class ProjectPage {
     });
   }
 
+  protected toggleSimulation(): void {
+    this.simulationActive = !this.simulationActive;
+    if (!this.simulationActive) {
+      this.selectedTurbine = null;
+    }
+    this.runSimulation();
+  }
+
+  protected handleCellClick(cell: Cell): void {
+    if (this.simulationActive) {
+      this.showDetails(cell);
+    } else {
+      this.toggleTurbine(cell.x, cell.y);
+    }
+  }
+
+  protected showDetails(cell: Cell): void {
+    if (cell.hasTurbine) {
+        this.selectedTurbine = cell;
+    } else {
+        this.selectedTurbine = null;
+    }
+    this.changeDetector.detectChanges();
+  }
+
   protected toggleTurbine(x: number, y: number): void {
     this.apiService.toggleTurbine(this.id, x, y).subscribe({
       next: data => {
