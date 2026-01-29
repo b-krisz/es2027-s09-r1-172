@@ -109,6 +109,30 @@ export class ProjectPage {
     cell.modifiers = [];
     cell.color = "rgba(0, 255, 0, 0.5)";
   }
+
+  private windOutputs(direction: string, dx: number, dy: number, speed: number): void {
+    if (!this.project || !this.project.cells) return;
+
+    for (let y = 0; y < 20; y++) {
+      for (let x = 0; x < 20; x++) {
+        let ix = x;
+        let iy = y;
+
+        if (direction === "n") { iy = y; ix = x; }
+        else if (direction === "s") { iy = 19 - y; ix = x; }
+        else if (direction === "e") { ix = x; iy = y; }
+        else if (direction === "w") { ix = 19 - x; iy = y; }
+
+        const current = this.project.cells[ix + iy * 20];
+        if (!current.hasTurbine) continue;
+
+        this.applyEnvironmentalModifiers(current, ix, iy, dx, dy, speed);
+        this.calculatePowerOutput(current);
+        this.totalPower += current.powerOutput || 0;
+      }
+    }
+  }
+
   private applyEnvironmentalModifiers(current: Cell, ix: number, iy: number, dx: number, dy: number, speed: number): void {
     if (!this.project || !this.project.cells) return;
 
