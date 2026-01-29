@@ -83,6 +83,13 @@ export class ProjectPage {
     this.changeDetector.detectChanges();
   }
 
+  private clampWind(): number {
+    let speed = Number(this.windSpeed.value) || 0;
+    if (speed < 0) speed = 0;
+    if (speed > 40) speed = 40;
+    return speed;
+  }
+
   private setSimulation(cell: Cell, speed: number): void {
     cell.powerOutput = 0;
     cell.modifiedWindSpeed = speed;
