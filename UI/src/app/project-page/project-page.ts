@@ -70,6 +70,19 @@ export class ProjectPage {
     });
   }
 
+  private clearSimulation(): void {
+    if (!this.project || !this.project.cells) return;
+    this.turbineCount = this.project.cells.filter(c => c.hasTurbine).length;
+    this.project.cells.forEach(c => {
+      c.powerOutput = 0;
+      c.modifiedWindSpeed = 0;
+      c.modifiers = [];
+      c.color = undefined;
+    });
+    this.totalPower = 0;
+    this.changeDetector.detectChanges();
+  }
+
   private applyColors(turbines: Cell[]): void {
     if (turbines.length === 0) return;
 
