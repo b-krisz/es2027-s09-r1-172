@@ -48,9 +48,9 @@ Solution by Bori Krisztián Sándor
 
     The JSON SERVER itself defaulty runs on **http://localhost:3000**
     ```sh
-    npx json-server <database_file> --port <port>
+    npx json-server <database_file> --host <host> --port <port>
     ```
-    **e.g. ```npx json-server ./database.json --port 3000```**
+    **e.g. ```npx json-server ./database.json --host localhost --port 3000```**
 
 
 ### Command Line Tool
@@ -82,7 +82,7 @@ Solution by Bori Krisztián Sándor
     
 2. *It is possible to run the program both with the executable manually or with the dotnet command*
     
-    It is necceseary to set both the **FRONTEND SERVER**'s url and the **JSON SERVER**'s URL
+    It is necceseary to set both the **FRONTEND SERVER**'s URL and the **JSON SERVER**'s URL
     
     The REST API itself defaulty runs on **http://localhost:3001**
     - Executable
@@ -107,7 +107,7 @@ Solution by Bori Krisztián Sándor
     ```json
     {
         "/api/**": {
-            "target": "<backend_url>",
+            "target": "<rest_api_url>",
             "secure": false
         }
     }
