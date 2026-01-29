@@ -1,1 +1,8 @@
-<img class="w-full" src="{{this.imageSource}}" alt="Grid">
+<div class="relative w-full h-full flex items-center justify-center">
+    <img class="w-full" src="{{this.imageSource}}" alt="Grid" [style.backgroundColor]="this.cellV()?.color">
+    @if (this.windDirection()) {
+        <div class="absolute text-3xl opacity-50 pointer-events-none" [style.transform]="arrowRotation">
+            ↑
+        </div>
+    }
+</div>

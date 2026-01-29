@@ -1,13 +1,9 @@
 import {ChangeDetectorRef, Component, computed, input, InputSignal} from '@angular/core';
 import {Cell} from '../../../models/cell';
-import {NgOptimizedImage} from '@angular/common';
-import {debounceTime} from 'rxjs';
 
 @Component({
   selector: 'app-cell-component',
-  imports: [
-    NgOptimizedImage
-  ],
+  imports: [],
   templateUrl: './cell-component.html',
   styleUrl: './cell-component.css',
 })
@@ -18,7 +14,22 @@ export class CellComponent {
   public cells: InputSignal<Cell[] | undefined> = input();
   protected cellsV = computed(() => this.cells());
 
+  public windDirection: InputSignal<string | undefined> = input();
+
   protected imageSource: string = "/Grid.png";
+
+  protected get arrowRotation(): string {
+    const dir = this.windDirection()?.toLowerCase();
+    if (dir === 'n') return 'rotate(180deg)';
+    if (dir === 'ne') return 'rotate(225deg)';
+    if (dir === 'e') return 'rotate(270deg)';
+    if (dir === 'se') return 'rotate(315deg)';
+    if (dir === 's') return 'rotate(0deg)';
+    if (dir === 'sw') return 'rotate(45deg)';
+    if (dir === 'w') return 'rotate(90deg)';
+    if (dir === 'nw') return 'rotate(135deg)';
+    return '';
+  }
 
   constructor(private changeDetector: ChangeDetectorRef) {}
 
