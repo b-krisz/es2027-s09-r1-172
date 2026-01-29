@@ -10,7 +10,7 @@ export class ApiService {
   private http: HttpClient = inject(HttpClient);
 
   select(projectId: string | null): Observable<Project> {
-    return this.http.get<Project>("/api/project/select?id=" + projectId);
+    return this.http.get<Project>("/api/projects/select?id=" + projectId);
   }
 
   search(searchQuery: string): Observable<Project[]>
