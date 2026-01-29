@@ -20,15 +20,19 @@ namespace RESTAPI.Controllers
             _httpClientFactory = httpClientFactory;
         }
 
-        [HttpGet("paginate")]
-        public async Task<IActionResult> GetPaginate()
+        [HttpGet("select")]
+        public async Task<IActionResult> GetSelect([FromQuery] string? id)
         {
             try
             {
                 HttpClient client = _httpClientFactory.CreateClient("JsonApi");
-                HttpResponseMessage response = await client.GetAsync("projects");
+                HttpResponseMessage response = await client.GetAsync("projects?id=" + id);
+                string responseRaw = await response.Content.ReadAsStringAsync();
+                List<Project> projects = JsonSerializer.Deserialize<List<Project>>(responseRaw) ?? new List<Project>();
                 
-                return Ok(await response.Content.ReadAsStringAsync());
+                if (projects.Count == 0)
+                    return NotFound();
+                return Ok(projects.FirstOrDefault());
             }
             catch (Exception e)
             {
@@ -45,8 +49,10 @@ namespace RESTAPI.Controllers
                 HttpResponseMessage response = await client.GetAsync($"projects");
                 string responseRaw = await response.Content.ReadAsStringAsync();
                 List<Project> allProjects = JsonSerializer.Deserialize<List<Project>>(responseRaw) ?? new List<Project>();
+                List<Project> filteredProjects = allProjects.Where(project =>
+                    project.name.Contains(query ?? "") || project.id.Contains(query ?? "")).ToList();
                 
-                return Ok(allProjects.Where(project => project.name.Contains(query ?? "") || project.id.Contains(query ?? "")));
+                return Ok(filteredProjects.ToList());
             }
             catch (Exception e)
             {
